@@ -49,7 +49,7 @@ export const getFullDuration = ({
   manuscripts,
   playerConfig,
 }: GetFullDurationArgs) => {
-  const introDuration = roundToNearestFrame(playerConfig.intro?.duration ?? 0);
+  const introDuration = roundToNearestFrame(playerConfig.intro?.duration ?? 0.8);
   const introOffset = roundToNearestFrame(playerConfig.intro?.offset ?? 0);
 
   const selectedReporterIntro = getSelectedReporterIntro(playerConfig);
@@ -57,16 +57,16 @@ export const getFullDuration = ({
     selectedReporterIntro?.duration ?? 0
   );
 
-  const wipeDuration = roundToNearestFrame(playerConfig.wipe?.duration ?? 0);
-  const wipeOffset = roundToNearestFrame(playerConfig.wipe?.offset ?? 0);
+  const wipeDuration = roundToNearestFrame(playerConfig.wipe?.duration ?? 0.4);
+  const wipeOffset = roundToNearestFrame(playerConfig.wipe?.offset ?? -0.35);
 
   const selectedReporterOutro = getSelectedReporterOutro(playerConfig);
   const reporterOutroDuration = roundToNearestFrame(
     selectedReporterOutro?.duration ?? 0
   );
 
-  const outroDuration = roundToNearestFrame(playerConfig.outro?.duration ?? 0);
-  const outroOffset = roundToNearestFrame(playerConfig.outro?.offset ?? 0);
+  const outroDuration = roundToNearestFrame(playerConfig.outro?.duration ?? 0.8);
+  const outroOffset = roundToNearestFrame(playerConfig.outro?.offset ?? -0.3);
 
   const intro = introDuration + introOffset;
 

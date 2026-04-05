@@ -10,6 +10,9 @@ import type { z } from "zod";
 import { playerSchema, type processedManuscriptSchema } from "@videofy/types";
 
 import { BackgroundMusic } from "./Sequence/Assets/BackgroundMusic";
+import { FadeIntro } from "./Sequence/Assets/FadeIntro";
+import { FadeOutro } from "./Sequence/Assets/FadeOutro";
+import { FadeWipe } from "./Sequence/Assets/FadeWipe";
 import { Intro } from "./Sequence/Assets/Intro";
 import { Logo } from "./Sequence/Assets/Logo";
 import { Outro } from "./Sequence/Assets/Outro";
@@ -164,6 +167,17 @@ function buildSeriesSequences(
         <Intro asset={expandedPlayerConfig.intro} introDuration={introDuration} />
       </Series.Sequence>
     );
+  } else {
+    const fadeDuration = roundToNearestFrame(0.8);
+    sequenceItems.push(
+      <Series.Sequence
+        key="intro-sequence"
+        style={{ zIndex: 1 }}
+        durationInFrames={fadeDuration}
+      >
+        <FadeIntro duration={fadeDuration} />
+      </Series.Sequence>
+    );
   }
 
   if (reporterIntro) {
@@ -204,18 +218,32 @@ function buildSeriesSequences(
       </Series.Sequence>
     );
 
-    if (expandedPlayerConfig.wipe && manuscriptIndex !== manuscripts.length - 1) {
-      const wipeDuration = roundToNearestFrame(expandedPlayerConfig.wipe.duration);
-      sequenceItems.push(
-        <Series.Sequence
-          key={`wipe-${manuscriptKey}-${manuscriptIndex}`}
-          offset={roundToNearestFrame(expandedPlayerConfig.wipe.offset)}
-          durationInFrames={wipeDuration}
-          style={{ zIndex: 1 }}
-        >
-          <Wipe duration={wipeDuration} asset={expandedPlayerConfig.wipe} />
-        </Series.Sequence>
-      );
+    if (manuscriptIndex !== manuscripts.length - 1) {
+      if (expandedPlayerConfig.wipe) {
+        const wipeDuration = roundToNearestFrame(expandedPlayerConfig.wipe.duration);
+        sequenceItems.push(
+          <Series.Sequence
+            key={`wipe-${manuscriptKey}-${manuscriptIndex}`}
+            offset={roundToNearestFrame(expandedPlayerConfig.wipe.offset)}
+            durationInFrames={wipeDuration}
+            style={{ zIndex: 1 }}
+          >
+            <Wipe duration={wipeDuration} asset={expandedPlayerConfig.wipe} />
+          </Series.Sequence>
+        );
+      } else {
+        const fadeDuration = roundToNearestFrame(0.4);
+        sequenceItems.push(
+          <Series.Sequence
+            key={`wipe-${manuscriptKey}-${manuscriptIndex}`}
+            offset={roundToNearestFrame(-0.35)}
+            durationInFrames={fadeDuration}
+            style={{ zIndex: 1 }}
+          >
+            <FadeWipe duration={fadeDuration} />
+          </Series.Sequence>
+        );
+      }
     }
   }
 
@@ -237,6 +265,18 @@ function buildSeriesSequences(
         offset={roundToNearestFrame(expandedPlayerConfig.outro.offset)}
       >
         <Outro asset={expandedPlayerConfig.outro} outroDuration={outroDuration} />
+      </Series.Sequence>
+    );
+  } else {
+    const fadeDuration = roundToNearestFrame(0.8);
+    sequenceItems.push(
+      <Series.Sequence
+        key="outro-sequence"
+        durationInFrames={fadeDuration}
+        offset={roundToNearestFrame(-0.3)}
+        style={{ zIndex: 1 }}
+      >
+        <FadeOutro duration={fadeDuration} />
       </Series.Sequence>
     );
   }
