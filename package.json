@@ -7,6 +7,7 @@
     "types"
   ],
   "scripts": {
+    "dev:api": "uv run uvicorn api.main:app --reload --host 0.0.0.0 --port 8001",
     "dev:cms": "npm run dev -w @videofy/cms",
     "build:cms": "npm run build -w @videofy/cms",
     "check-types:cms": "npm run check-types -w @videofy/cms"

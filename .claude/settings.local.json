@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ffmpeg -version)",
+      "Bash(where uv:*)",
+      "Bash(where pip:*)",
+      "Bash(python:*)"
+    ]
+  }
+}
